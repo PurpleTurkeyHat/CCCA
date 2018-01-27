@@ -1,22 +1,36 @@
 #time, location
+import tweepy
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler
 from tweepy import Stream
+from geopy.geocoders import Nominatim
 
 access_token = "937000559843987463-DgmKxkTMnHmwRqFNKPISh4OWcupFRtH"
 access_token_secret = "VYJI7K4QMd65hUg2bfoNoFDSDdG3c43vPjUSZ8Rysox1a"
 consumer_key = "Vlqd8jWbRFEQx3wCLlGvkGz3E"
 consumer_key_secret = "BoTIT6r6QORMCcamSyvzgS9aJ6zlDL8GUaMPqxzUQzPQYC0VMX"
 
+disasters = ('flood', 'earthquake', 'wildfire', 'tornado', 'hurricane', 'tsunami', 'avalanche')
 
 class StdOutListener(StreamListener):
  
     def on_status(self, status):
-        if status.coordinates:
-            val = list(status.coordinates.values())
-            print(val[1])
-        if status.place:
-            print(status.place.full_name)
+        tweet = status.text
+
+        if status.coordinates or status.place:
+            geolocator = Nominatim()
+            if status.coordinates:
+                val = list(status.coordinates.values())
+                coord = val[1]
+                print(val[1])
+            elif status.place:
+                loc = geolocator.geocode(status.place.full_name)
+                print(loc)
+                coord = ('[' + loc.longitude + ', ' + loc.latitude + ']')
+            for dis in disasters:
+                if dis in tweet:
+                    with open("%s.txt" % dis, "a") as myfile:
+                        myfile.write(coord + ',')
         return True
 
     def on_error(self, status_code):
