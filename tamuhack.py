@@ -11,6 +11,8 @@ consumer_key = "Vlqd8jWbRFEQx3wCLlGvkGz3E"
 consumer_key_secret = "BoTIT6r6QORMCcamSyvzgS9aJ6zlDL8GUaMPqxzUQzPQYC0VMX"
 
 disasters = ('flood', 'earthquake', 'wildfire', 'tornado', 'hurricane', 'tsunami', 'avalanche', 'love')
+with open("output.txt", "a") as myfile:
+ myfile.write('lat, long, time, tag'\n')
 
 class StdOutListener(StreamListener):
  
@@ -28,7 +30,7 @@ class StdOutListener(StreamListener):
             elif status.place:
                 loc = geolocator.geocode(status.place.full_name)
                 print(loc)
-                coord = ('[' + repr(loc.longitude) + ', ' + repr(loc.latitude) + ']')
+                coord = (repr(loc.longitude) + ', ' + repr(loc.latitude))
 
             tag = 'IGNORE'
             for dis in disasters:
