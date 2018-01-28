@@ -23,15 +23,22 @@ class StdOutListener(StreamListener):
 
         if (status.coordinates or status.place) and ((status.coordinates is not None) or (status.place is not None)):
             geolocator = Nominatim(scheme='http', timeout = 10)
+
+            if status.place:
+                print(status.place)
+                loc = geolocator.geocode(status.place.full_name)
+                if loc is not None:
+                    coord = ('[' + repr(loc.longitude) + ',' + repr(loc.latitude) + ']')
+                else:
+                    add = False
+                    print('fals')
+
             if status.coordinates:
                 val = list(status.coordinates.values())
                 coord = str(val[1])
-            elif status.place:
-                loc = geolocator.geocode(status.place.full_name)
-                if loc is not None:
-                    coord = (repr(loc.longitude) + ',' + repr(loc.latitude))
-                else:
-                    add = False
+                add = True
+                print(coord)
+            
 
             tag = 'IGNORE'
             for dis in disasters:
