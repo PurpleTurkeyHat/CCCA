@@ -12,8 +12,6 @@ consumer_key = "Vlqd8jWbRFEQx3wCLlGvkGz3E"
 consumer_key_secret = "BoTIT6r6QORMCcamSyvzgS9aJ6zlDL8GUaMPqxzUQzPQYC0VMX"
 
 disasters = ('flood', 'earthquake', 'wildfire', 'tornado', 'hurricane', 'tsunami', 'avalanche', 'wild fire', 'forest fire')
-# with open("output.txt", "a") as myfile:
-#  myfile.write('lat, long, time, tag\n')
 
 class StdOutListener(StreamListener):
  
@@ -25,20 +23,16 @@ class StdOutListener(StreamListener):
             geolocator = Nominatim(scheme='http', timeout = 10)
 
             if status.place:
-                print(status.place)
                 loc = geolocator.geocode(status.place.full_name)
                 if loc is not None:
                     coord = ('[' + repr(loc.longitude) + ',' + repr(loc.latitude) + ']')
                 else:
                     add = False
-                    print('fals')
 
             if status.coordinates:
                 val = list(status.coordinates.values())
                 coord = str(val[1])
                 add = True
-                print(coord)
-            
 
             tag = 'IGNORE'
             for dis in disasters:
