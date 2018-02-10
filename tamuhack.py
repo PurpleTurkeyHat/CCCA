@@ -42,7 +42,7 @@ class StdOutListener(StreamListener):
             if add and tag is not 'IGNORE':
 
                 with open("output.txt", "a") as myfile:
-                    result = coord[1:-1] + ',' + str(status.created_at) + ',' + tag + '\n'
+                    result = coord[1:-1] + ',' + str(status.created_at) + ',' + tag + ',' + tweet + '\n'
                     myfile.write(result)
         return True
 
